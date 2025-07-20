@@ -273,13 +273,10 @@ export default function ProductsPage() {
                       {/* Price */}
                       <div className="mb-2">
                         <span className="text-lg font-bold text-green-700">
-                          Now Rp
-                          {Math.floor(product.price * 0.8).toLocaleString(
-                            "id-ID"
-                          )}
+                          Now Rp{product.price.toLocaleString("id-ID")}
                         </span>
                         <span className="text-sm text-gray-500 line-through ml-2">
-                          Rp{product.price.toLocaleString("id-ID")}
+                          Rp{(product.price * 1.25).toLocaleString("id-ID")}
                         </span>
                       </div>
 

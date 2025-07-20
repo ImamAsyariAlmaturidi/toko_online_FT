@@ -70,9 +70,6 @@ export default function CheckoutPage() {
     };
   }, []);
 
-  const shippingCost = total >= 100000 ? 0 : 15000;
-  const finalTotal = total + shippingCost;
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -398,7 +395,7 @@ export default function CheckoutPage() {
                           <p className="font-bold text-gray-900 text-sm">
                             Rp{" "}
                             {(
-                              Math.floor(item.price * 0.8) * item.quantity
+                              Math.floor(item.price) * item.quantity
                             ).toLocaleString("id-ID")}
                           </p>
                           <p className="text-xs text-gray-500 line-through">
@@ -424,37 +421,17 @@ export default function CheckoutPage() {
                         Rp {total.toLocaleString("id-ID")}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Shipping</span>
-                      <span className="font-medium text-gray-900">
-                        {shippingCost === 0
-                          ? "FREE"
-                          : `Rp ${shippingCost.toLocaleString("id-ID")}`}
-                      </span>
-                    </div>
+
                     <Separator className="bg-gray-200" />
                     <div className="flex justify-between">
                       <span className="text-lg font-semibold text-gray-900">
                         Order Total
                       </span>
                       <span className="text-lg font-bold text-red-600">
-                        Rp {finalTotal.toLocaleString("id-ID")}
+                        Rp {total.toLocaleString("id-ID")}
                       </span>
                     </div>
                   </div>
-
-                  {total < 100000 && (
-                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                      <p className="text-sm text-green-800">
-                        <span className="font-medium">FREE Shipping</span> on
-                        orders over Rp 100.000
-                      </p>
-                      <p className="text-xs text-green-700 mt-1">
-                        Add Rp {(100000 - total).toLocaleString("id-ID")} more
-                        to qualify
-                      </p>
-                    </div>
-                  )}
 
                   <div className="space-y-3 pt-2">
                     <Button

@@ -146,17 +146,15 @@ export default function CartPage() {
                           <h3 className="font-medium text-gray-900 line-clamp-2 mb-1">
                             {item.name}
                           </h3>
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="mb-2">
                             <span className="text-lg font-bold text-green-700">
-                              Rp{" "}
-                              {Math.floor(item.price * 0.8).toLocaleString(
-                                "id-ID"
-                              )}
+                              Now Rp{item.price.toLocaleString("id-ID")}
                             </span>
-                            <span className="text-sm text-gray-500 line-through">
-                              Rp {item.price.toLocaleString("id-ID")}
+                            <span className="text-sm text-gray-500 line-through ml-2">
+                              Rp{(item.price * 1.25).toLocaleString("id-ID")}
                             </span>
                           </div>
+
                           <div className="flex items-center gap-2 text-sm text-gray-600">
                             <span>In Stock</span>
                             <span>•</span>
@@ -212,7 +210,7 @@ export default function CartPage() {
                           <p className="font-bold text-gray-900 mb-2">
                             Rp{" "}
                             {(
-                              Math.floor(item.price * 0.8) * item.quantity
+                              Math.floor(item.price) * item.quantity
                             ).toLocaleString("id-ID")}
                           </p>
                           <Button
@@ -250,37 +248,17 @@ export default function CartPage() {
                       Rp {total.toLocaleString("id-ID")}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Shipping</span>
-                    <span className="font-medium text-gray-900">
-                      {shippingCost === 0
-                        ? "FREE"
-                        : `Rp ${shippingCost.toLocaleString("id-ID")}`}
-                    </span>
-                  </div>
+
                   <Separator className="bg-gray-200" />
                   <div className="flex justify-between">
                     <span className="text-lg font-semibold text-gray-900">
                       Order Total
                     </span>
                     <span className="text-lg font-bold text-red-600">
-                      Rp {finalTotal.toLocaleString("id-ID")}
+                      Rp {total.toLocaleString("id-ID")}
                     </span>
                   </div>
                 </div>
-
-                {total < 100000 && (
-                  <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                    <p className="text-sm text-green-800">
-                      <span className="font-medium">FREE Shipping</span> on
-                      orders over Rp 100.000
-                    </p>
-                    <p className="text-xs text-green-700 mt-1">
-                      Add Rp {(100000 - total).toLocaleString("id-ID")} more to
-                      qualify
-                    </p>
-                  </div>
-                )}
 
                 <div className="space-y-3 pt-2">
                   <Button

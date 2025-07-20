@@ -3,8 +3,9 @@
 // ============================================
 
 // Base URL untuk API backend Anda
-const API_BASE_URL = process.env.BASE_URL; // Ganti dengan URL backend Anda
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL; // Ganti dengan URL backend Anda
 
+console.log("API Base URL:", API_BASE_URL);
 // Helper function untuk handle fetch requests
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   const token = localStorage.getItem("authToken");
