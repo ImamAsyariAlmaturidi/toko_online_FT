@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/card";
 import { LayoutDashboard, Eye } from "lucide-react";
 import { authAPI } from "@/lib/api"; // Import your API functions
+import { doLogin } from "../actions/action";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -33,14 +34,10 @@ export default function LoginPage() {
       // ============================================
       // PANGGIL API LOGIN ANDA DI SINI
       // ============================================
-      const response = await authAPI.login(email, password);
+      const response = await doLogin(email, password);
 
       // Sesuaikan dengan struktur response dari backend Anda
       if (response.success || response.token) {
-        // Simpan token jika ada
-        if (response.token) {
-          localStorage.setItem("authToken", response.token);
-        }
         // Simpan status login
         localStorage.setItem("adminAuth", "true");
         return true;

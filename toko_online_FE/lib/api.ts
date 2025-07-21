@@ -2,14 +2,17 @@
 // API CONFIGURATION - TEMPAT UNTUK ENDPOINT ANDA
 // ============================================
 
+import { getToken } from "@/app/actions/action";
+import { get } from "http";
+
 // Base URL untuk API backend Anda
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL; // Ganti dengan URL backend Anda
 
-console.log("API Base URL:", API_BASE_URL);
 // Helper function untuk handle fetch requests
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("authToken");
+  const token = await getToken();
 
+  console.log("Using token:", token);
   const defaultHeaders: HeadersInit = {
     "Content-Type": "application/json",
   };
@@ -33,7 +36,7 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   try {
     const response = await fetch(`${API_BASE_URL}${url}`, config);
 
-    // Handle non-JSON responses (like for delete operations)
+    // Handle l-JSON responses (like for delete operations)
     const contentType = response.headers.get("content-type");
     let data;
 
@@ -106,13 +109,14 @@ export const productsAPI = {
   // Get all products with pagination
   getAll: async (page = 1, limit = 10) => {
     try {
-      const data = await fetchWithAuth(
-        `/products/?page=${page}&limit=${limit}`,
+      const data = await fetch(
+        `${API_BASE_URL}/products/?page=${page}&limit=${limit}`,
         {
           method: "GET",
         }
       );
-      return data;
+
+      return await data.json();
     } catch (error) {
       throw error;
     }
@@ -121,10 +125,10 @@ export const productsAPI = {
   // Get product by ID
   getById: async (id: string) => {
     try {
-      const data = await fetchWithAuth(`/products/${id}`, {
+      const data = await fetch(`${API_BASE_URL}/products/${id}`, {
         method: "GET",
       });
-      return data;
+      return await data.json();
     } catch (error) {
       throw error;
     }
@@ -147,7 +151,7 @@ export const productsAPI = {
       formData.append("image", productData.image);
 
       // For FormData, we need to remove Content-Type header to let browser set it
-      const token = localStorage.getItem("authToken");
+      const token = await getToken();
       const headers: HeadersInit = {};
 
       if (token) {
@@ -211,7 +215,7 @@ export const productsAPI = {
       }
 
       // For FormData, we need to remove Content-Type header to let browser set it
-      const token = localStorage.getItem("authToken");
+      const token = await getToken();
       const headers: HeadersInit = {};
 
       if (token) {
@@ -271,7 +275,7 @@ export const ordersAPI = {
   getAll: async (access_token?: string, page = 1) => {
     try {
       // Use provided token or get from localStorage
-      const token = access_token || localStorage.getItem("authToken");
+      const token = access_token || (await getToken());
 
       const headers: HeadersInit = {
         "Content-Type": "application/json",
@@ -361,11 +365,14 @@ export const ordersAPI = {
     payment_status: string;
   }) => {
     try {
-      const data = await fetchWithAuth("/orders/", {
+      const data = await fetch(`${API_BASE_URL}/orders/`, {
         method: "POST",
         body: JSON.stringify(orderData),
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
-      return data;
+      return data.json();
     } catch (error) {
       throw error;
     }

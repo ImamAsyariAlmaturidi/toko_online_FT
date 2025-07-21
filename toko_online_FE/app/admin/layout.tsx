@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/admin/sidebar";
 import { Menu } from "lucide-react";
+import { doLogout } from "../actions/action";
 
 function HamburgerButton({
   sidebarOpen,
@@ -67,7 +68,10 @@ export default function AdminLayout({
   const handleLogout = async () => {
     try {
       // Uncomment ini jika Anda ingin memanggil logout endpoint
+      localStorage.removeItem("adminAuth");
+
       // await authAPI.logout()
+      await doLogout();
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
